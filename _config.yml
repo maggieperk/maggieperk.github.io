@@ -21,7 +21,7 @@
 title: E. Margaret Perkoff
 email: margaret.perkoff@colorado.edu
 description:
-  Personal website for Elana Margaret Perkoff, PhD student at CU Boulder.
+   Margaret Perkoff, PhD student at CU Boulder in Computer Science & Cognitive Science. I'm excited about NLP research for assistive communication devices and education techonlogy.
 domain: maggieperk.github.io
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://maggieperk.github.io" # the base hostname & protocol for your site, e.g. http://example.com
@@ -44,7 +44,9 @@ nav_exclude:                                            # The following paths ar
 ### Author Info ###
 author: 
   name: Maggie Perkoff
-  image: _images/flagstaff_running.jpg
+  image: "/assets/images/flagstaff_running.jpg"
+  linkedin: e-margaret-perkoff-a35b5983/
+  github: maggieperk
 ### Posts ###
 permalink: /blog/:title
 
