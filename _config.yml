@@ -29,9 +29,55 @@ twitter_username: jekyllrb
 github_username:  maggieperk
 
 # Build settings
-theme: minima
+repository: maggieperk/maggieperk.github.io
+remote_theme: YoussefRaafatNasry/portfolYOU 
 plugins:
   - jekyll-feed
+  - jemoji
+
+### Navbar Settings ###
+nav_exclude:                                            # The following paths are excluded from navbar
+  - pages/tags.html
+  - pages/404.html
+  - pages/index.md
+
+### Author Info ###
+author: 
+  name: Maggie Perkoff
+  image: /images/
+### Posts ###
+permalink: /blog/:title
+
+
+### Collections ###
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name
+
+### Analytics ###
+analytics:
+  enabled: false                                        # Set true to enable analytics
+  google:
+    tracking_id: your-google-tracking-id
+
+### Defaults for collections ###
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "page"
+  - scope:                                              # For Documentation Only
+      path: ""                                          # For Documentation Only
+      type: "elements"                                  # For Documentation Only
+    values:                                             # For Documentation Only
+      layout: "element"                                 # For Documentation Only
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: false                                   # Set to true to enable disqus comments
 
 # Exclude from processing.
 # The following items will not be processed, by default.
