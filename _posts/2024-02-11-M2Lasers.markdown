@@ -1,0 +1,359 @@
+---
+layout: post
+title:  "M2: Lasered - Laser Cutting Computational Designs"
+date:   2024-01-22 12:29:54 +0100
+categories: comp_fabrication
+---
+## Description
+For assignment M2, we had to use processing to digitally generate designs with at least one design using a for-loop.  In all three of my designs, a loop is used at various points.  I was surprised to discover how difficult it is to make "simple" shapes such as the ones used in Design 2 and 3 below versus the more complex appearing spiral shape in Design 1.  Creating the larger "H" from Design 3 required a lot of patience to line up the dimensions correctly and position a turtle object properly.  For the cat and dog faces, I kept them simple in part since it was so difficult to line up facial characteristics (the ears in particular) with the face while adjusting the scale.  I ended up using some of the polar coordinates code from Design 1 to get the dimensions correct there.
+
+## Materials Used
+- Acrylic (etched design)
+- Wood (cut design/engraved)
+
+## Task 1: Digitally Generated Designs
+### Design 1: Spirals
+![Spiral Design](../assets/images/yarn_spiral.png)
+#### Code
+```
+import Turtle.*;
+import processing.pdf.*;
+
+Turtle t;
+String fileName;
+
+void setup(){
+  size(500,500);
+  background(255);
+  stroke(0);
+  t = new Turtle(this);
+  noLoop();
+}
+
+int getSpiralPolarX(float a, float radius, float t){
+  return int(a * radius * cos(radians(t)));
+}
+
+
+void rightSpiral(float maxRadius, int iterations) {
+ float fwdDist = 0.20;
+ float angleRot = 30.0;
+ for (int i = 0; i < iterations; i+=1) {
+   for (int a = 1; a < angleRot ; a+=3.1415) { 
+      float moveX = getSpiralPolarX(fwdDist, maxRadius, float(a));
+      t.forward(fwdDist * i);
+      t.right(a);
+   }
+ }
+}
+
+
+void draw(){
+  rightSpiral(250.0, 240);
+  
+}
+
+void keyPressed() { 
+
+  //press the 's' key to save a pdf of your drawing
+  if (key == 's') {
+    //name of file is "turtleDrawing" plus a unique(ish) number
+    fileName = "turtleDrawing" + getDateString() + ".pdf";
+    beginRecord(PDF, fileName);
+    draw();
+    endRecord();
+    println("Saved to file: " + fileName);
+
+    println();
+  }
+} 
+
+String getDateString() {
+  String time = str(hour()) + "_" + str(minute()) + "_" + str(second());
+  String date = str(year()) + "_" + str(month()) + "_" + str(day());
+  return date + "-" + time;
+}
+```
+
+### Design 2: H Sign
+![H Sign Design from Processing - a large H filled with miniature H's.](../assets/images/H_sign.png)
+```
+import Turtle.*;
+import processing.pdf.*;
+
+Turtle t;
+String fileName;
+int maxLetterHeight = 200;
+int figureWidth = 400;
+
+void setup(){
+  size(500,500);
+  background(255);
+  stroke(0);
+  t = new Turtle(this);
+  noLoop();
+}
+
+void drawH(int maxLetterHeight, int maxLetterWidth, int insertWidth, int insertHeight){
+    // Making the H
+  t.forward(maxLetterHeight);
+  t.right(90);
+  t.forward(insertWidth);
+  t.right(90);
+  t.forward(insertHeight);
+  t.left(90);
+  t.forward(insertWidth);
+  t.left(90);
+  t.forward(insertHeight);
+  t.right(90);
+  t.forward(insertWidth);
+  t.right(90);
+  t.forward(maxLetterHeight);
+  t.right(90);
+  t.forward(maxLetterWidth/4);
+  t.right(90);
+  t.forward(insertHeight);
+  t.left(90);
+  t.forward(insertWidth);
+  t.left(90);
+  t.forward(insertHeight);
+  t.right(90);
+  t.forward(insertWidth);
+}
+void draw(){
+  int maxLetterHeight = 240;
+  int maxLetterWidth = 300;
+  
+  int insertWidth = int(maxLetterWidth/4);
+  int insertHeight = int(maxLetterHeight/3);
+  
+  int startx = int(width/2) - int(maxLetterWidth/2);
+  int starty = int(height/2) + int(maxLetterHeight/2);
+  
+  t.penUp();
+  t.setX(startx);
+  t.setY(starty);
+  t.penDown();
+
+  // make a big H
+  drawH(maxLetterHeight, maxLetterWidth, insertWidth, insertHeight);
+  
+  // make mini H's
+  int miniLetterHeight = maxLetterHeight/10;
+  int miniLetterWidth = maxLetterWidth/10;
+  int miniInsertWidth = insertWidth/10;;
+  int miniInsertHeight = insertHeight/10;
+  
+    for (int i =0; i*miniLetterWidth < maxLetterHeight; i++){
+      t.penUp();
+      t.setX(startx + miniLetterWidth);
+      t.setY(starty - i*miniLetterWidth);
+      t.penDown();
+      drawH(miniLetterHeight, miniLetterWidth, miniInsertWidth, miniInsertHeight);
+      t.right(90);
+    }
+    // Second column of mini H's
+    int col2X = startx + 2 * miniLetterWidth;
+    for (int i =0; i*miniLetterWidth < maxLetterHeight; i++){
+      t.penUp();
+      t.setX(col2X);
+      t.setY(starty - i*miniLetterWidth);
+      t.penDown();
+      drawH(miniLetterHeight, miniLetterWidth, miniInsertWidth, miniInsertHeight);
+      t.right(90);
+    }
+    
+    // Middle set of H's
+    t.right(90);
+    int middleXStart = startx + insertWidth - miniLetterWidth/4;
+    int middleYStart = starty - insertHeight;
+    
+    for (int k = 0; k < 3; k++) {
+      for (int j =0; j < 2; j++){
+        t.penUp();
+        t.setX(middleXStart);
+        t.setY(middleYStart - j*miniLetterWidth);
+        t.penDown();
+        drawH(miniLetterHeight, miniLetterWidth, miniInsertWidth, miniInsertHeight);
+        t.right(90);
+      }
+      middleXStart +=miniLetterWidth;
+      
+    }
+    
+    // Right hand H's
+    t.right(90);
+    int rightHXStart = startx + insertWidth*2 + miniLetterWidth/2;
+    int rightHYStart = starty - maxLetterHeight;
+    for (int m =0; m*miniLetterWidth < maxLetterHeight; m++){
+      t.penUp();
+      t.setX(rightHXStart);
+      t.setY(rightHYStart + m*miniLetterWidth);
+      t.penDown();
+      drawH(miniLetterHeight, miniLetterWidth, miniInsertWidth, miniInsertHeight);
+      t.right(90);
+    }
+    
+    int rightHX2Start = startx + insertWidth*2 + miniLetterWidth/2 + miniLetterWidth;
+    for (int n =0; n*miniLetterWidth < maxLetterHeight; n++){
+      t.penUp();
+      t.setX(rightHX2Start);
+      t.setY(rightHYStart + n*miniLetterWidth);
+      t.penDown();
+      drawH(miniLetterHeight, miniLetterWidth, miniInsertWidth, miniInsertHeight);
+      t.right(90);
+    }
+  
+  
+}
+
+void keyPressed() { 
+
+  //press the 's' key to save a pdf of your drawing
+  if (key == 's') {
+    fileName = "houseSign" + getDateString() + ".pdf";
+    beginRecord(PDF, fileName);
+    draw();
+    endRecord();
+    println("Saved to file: " + fileName);
+
+    println();
+  }
+} 
+
+String getDateString() {
+  String time = str(hour()) + "_" + str(minute()) + "_" + str(second());
+  String date = str(year()) + "_" + str(month()) + "_" + str(day());
+  return date + "-" + time;
+}
+```
+
+### Design 3: Cat/Dog
+![Repeating images of a cat + dog in rows of 3 and columsn of 3](../assets/images/cat_dog.png)
+```
+import processing.pdf.*;
+String fileName;
+
+void setup(){
+  size(500,500);
+  background(255);
+  stroke(0);
+  noLoop();
+}
+
+int findXPointOnCircle(int centerX, int radius, int d){
+  return int((radius * (cos(radians(d)))) + centerX);
+  
+}
+
+int findYPointOnCircle(int centerY, int radius, int d) {
+    return int((radius * (sin(radians(d)))) + centerY);
+
+}
+
+
+void drawCat(int centerX, int centerY, int diam) {
+  // Draw the head
+  circle(centerX, centerY, diam);
+  int radius = diam/2;
+  // Left Ear
+  int ear_size = int(radius/2);
+  int lp1_X = findXPointOnCircle(centerX, radius, 210);
+  int lp1_Y = findYPointOnCircle(centerY, radius, 210);
+  int lp2_X = lp1_X + ear_size/2;
+  int lp2_Y = lp1_Y - ear_size;
+  int lp3_X = lp1_X + ear_size;
+  int lp3_Y = lp1_Y;
+  
+  triangle(lp1_X, lp1_Y, lp2_X, lp2_Y, lp3_X, lp3_Y);
+  // Right ear
+  int rp1_X = findXPointOnCircle(centerX, radius, 330);
+  int rp1_Y = findYPointOnCircle(centerY, radius, 330);
+  int rp2_X = rp1_X - ear_size/2;
+  int rp2_Y = rp1_Y - ear_size;
+  int rp3_X = rp1_X - ear_size;
+  int rp3_Y = rp1_Y;
+  
+  triangle(rp1_X, rp1_Y, rp2_X, rp2_Y, rp3_X, rp3_Y);
+  
+  // draw eyes
+  circle(centerX - int(diam/4), centerY, diam/6);
+  circle(centerX + int(diam/4), centerY, diam/6);
+  
+}
+
+void drawDog(int centerX, int centerY, int diam) {
+  // Draw the head
+  circle(centerX, centerY, diam);
+  int radius = diam/2;
+  // Left dog Ear
+  int ear_size = int(radius/2);
+  int lp1_X = findXPointOnCircle(centerX, radius, 210);
+  int lp1_Y = findYPointOnCircle(centerY, radius, 210)+ear_size;
+  
+  ellipse(lp1_X, lp1_Y, ear_size, ear_size*2.5);
+  // Right dog ear
+  int rp1_X = findXPointOnCircle(centerX, radius, 330);
+  int rp1_Y = findYPointOnCircle(centerY, radius, 330)+ear_size;
+  
+  ellipse(rp1_X, rp1_Y, ear_size, ear_size*2.5);
+  
+  // draw mouth
+  ellipse(centerX, centerY + int(diam/5), diam/4, diam/5);
+}
+
+void draw() {
+  int face_size = 70;
+  int startX = int(face_size * 1.25);
+  int startY = int(face_size * 1.25);
+  boolean is_cat = true;
+  int colCount = 1;
+  
+  for (int x = startX; x < width - face_size; x+=(face_size*2.3)){
+    if (colCount % 2 == 0) {
+      // Make sure we alternate the starting shape of the row
+      is_cat = false;
+    } else {
+      is_cat = true;
+    }
+    for (int y = startY; y < height - face_size; y+=(face_size*2.3)) {
+      if (is_cat) {
+        drawCat(x, y, 100);
+        is_cat = false;
+      } else {
+        drawDog(x, y, 100);
+        is_cat = true;
+      }
+    }
+    colCount+=1;
+  }
+}
+void keyPressed() { 
+
+  //press the 's' key to save a pdf of your drawing
+  if (key == 's') {
+    fileName = "cat_dog" + getDateString() + ".pdf";
+    beginRecord(PDF, fileName);
+    draw();
+    endRecord();
+    println("Saved to file: " + fileName);
+
+    println();
+  }
+} 
+
+String getDateString() {
+  String time = str(hour()) + "_" + str(minute()) + "_" + str(second());
+  String date = str(year()) + "_" + str(month()) + "_" + str(day());
+  return date + "-" + time;
+}
+```
+
+## Task 2: Fabricated Designs
+### Etched Design - Cat/Dog
+![Etched acrylic design 5 x 5" with alternating cat and dog outlined faces in three rows](../assets/images/cat_dog_etched.JPG)
+For the etched design, I chose to use acrylic and print out Design 3 above 'cat/dog'.  Overall, printing out this design on the acrylic was fairly straightforward.  I'm happy with how the final product looked - they still have a fun/goofy look.  I'm hoping to paint the acrylic to have a stained glass effect with the animal shapes. The fact that I kept the faces fairly simple made the cut look clean without overdoing the detail.
+
+### Cut Design
+![A piece of wood cut into the shape of an H filled with smaller engravings of H's.](../assets/images/h_cut_design.JPG)
+For the cut design, I used the code from Design 2 above to create a PNG file that could be imported into Rhino.  I wanted to cut the boundary of the "H" while engraving the miniature h's inside of it.  I did find that the miniature H's that border the cut of the H did not come out as clean.  Additionally, the extra work with the Lazor Wizard, Quinn, to get this design imported properly was an interesting experience.  The Rhino software was confused by the boundary of the miniature H's and the outer H so they showed me how to manually adjust shapes in Adobe illustrator to create clear boundaries.  I think in future designs I would avoid having overlap between the border of the final design and the inner pattern to simplify things.
