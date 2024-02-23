@@ -1,0 +1,423 @@
+---
+layout: post
+title:  "L1: L1-Systems"
+date:   2024-02-13 12:59:54 +0100
+categories: comp_fabrication
+---
+## Description
+
+## Materials Used
+
+## Task 1
+Capital I and T
+<img src="../assets/images/capital_I.svg" alt="Capital I on white background" align="top" width=100 height=100/> <img src="../assets/images/capital_T.svg" alt="Capital T on white background." align="top" width=200 height=200/>
+Code
+```
+void make_I() {
+  int i_size = 180;
+  int i_inserts = i_size/3;
+  
+  t.penDown();
+  t.forward(i_size);
+  t.left(90);
+  // top
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_size);
+  t.right(90);
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_inserts);
+  // middle
+  t.left(90);
+  t.forward(i_size);
+  // base
+  t.left(90);
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_size);
+  t.right(90);
+  t.forward(i_inserts);
+  t.right(90);
+  t.forward(i_inserts);
+}
+
+void make_T() {
+  int t_size = 180;
+  int t_inserts = t_size/3;
+  
+  t.penDown();
+  t.forward(t_size);
+  t.left(90);
+  // top
+  t.forward(t_inserts);
+  t.right(90);
+  t.forward(t_inserts);
+  t.right(90);
+  t.forward(t_size);
+  t.right(90);
+  t.forward(t_inserts);
+  t.right(90);
+  t.forward(t_inserts);
+  // middle
+  t.left(90);
+  t.forward(t_size);
+  // base
+  t.right(90);
+  t.forward(t_inserts);
+}
+
+```
+Triangle
+<img alt="A white background with an isoceles triangle in black ink." src="../assets/images/triangle.svg" width=200 height=200/>
+```
+void makeTriangle(){
+  int angle = 120;
+  int size = 100;
+  t.penDown();
+  for(int i =0; i<3; i++){
+    t.right(angle);
+    t.forward(size);
+  }
+}
+```
+Regular Pentagon
+<img alt="A white background with a black pentagon outline." src="../assets/images/pentagon.svg" width=200 height=200/>
+```
+void make_reg_Pentagon(int pentagon_size){
+  int angle=180-108;
+  t.penDown();
+  for (int i=0; i<5; i++) {
+    t.forward(pentagon_size);
+    t.right(angle);
+    //t.forward(pentagon_size);
+  }
+}
+```
+Circle
+<img alt="A white background with a black circle outline." src="../assets/images/l1_circle.svg" width=200 height=200/>
+```
+void make_circle(int radius) {
+  t.penDown();
+  int moveDist = 1;
+  
+  for (int i = 0; i < 360; i++) {
+    t.push();
+    t.penUp();
+    t.right(i);
+    t.forward(radius);
+    t.penDown();
+    t.forward(moveDist);
+    t.pop();
+  }
+}
+```
+## Task 2: Implement L-System Framework
+Modifications to the draw method for base L systems
+```
+// [TODO]:[DONE] Iterate (simulate) the LSystem for numIterations 
+  // using its iterate() function
+  for (int i =0; i<numIterations; i++){
+    lSys.iterate();
+  }
+```
+
+Modifications to the L System Class
+```
+import java.util.HashMap;
+
+void make_semi_circle(int radius) {
+  t.penDown();
+  int moveDist = 1;
+  for (int i = 0; i < 270; i++) {
+    t.push();
+    t.penUp();
+    t.left(i);
+    t.forward(radius);
+    t.penDown();
+    t.forward(moveDist);
+    t.pop();
+}}
+
+void make_circle(int radius) {
+  t.penDown();
+  int moveDist = 1;
+  for (int i = 0; i < 360; i++) {
+    t.push();
+    t.penUp();
+    t.right(i);
+    t.forward(radius);
+    t.penDown();
+    t.forward(moveDist);
+    t.pop();
+  }
+}
+
+class LSystem extends BaseLSystem {
+  
+ // Production rules
+  private HashMap<Character, String> rules;
+
+  // Constructor for making an Lsystem object
+  public LSystem(String axiom, HashMap<Character, String> rules, 
+    float moveDistance, float rotateAngle, float scaleFactor) {            
+    
+    // Call Super Class constructor to initialize variables
+    // You must always call this.
+    super(axiom, moveDistance, rotateAngle, scaleFactor);
+    
+    // Set the Rules
+    this.rules = rules;
+    
+    // Reset the state
+    this.reset();
+  }
+  
+  // runs 1 iteration, performing the rules for each character
+  // on the current string. The result of the replacement is added to the currentIterationBuffer.
+  public void iterate() {
+    // get a copy of the current iteration string
+    String current = this.getIterationString();
+    
+    // Now clear the current interation string
+    this.clearCurrentStringBuffer();
+    
+    // [TODO]:[DONE] Implement the procedure for using the rules to replace characters in the current string, 
+    // and append them them to the currentIterationBuffer
+    for (char c : current.toCharArray()) {
+      if (this.rules.containsKey(c)){
+        // If a rule exists for the character, we expand the String
+        String ruleForChar = this.rules.get(c);
+        this.currentIterationBuffer.append(ruleForChar);
+      } else {
+        // If a rule does not exist this is a terminal character and we should add it
+        this.currentIterationBuffer.append(c);
+      }
+        
+    }
+    
+ 
+     // Increment our iteration after we are done
+     iterationNum += 1;
+  }
+  
+  // This function uses the turtle to draw based on each character in the LSystem's 
+  // iteration string. It also handles scaling the moveDistance (to keep the image in frame), if desired
+  public void drawLSystem(Turtle t) {
+    // Our turtle's move distance
+    float dist = this.moveDistance;
+    
+    // Scale the movement, if necessary, to help keep the image in frame 
+    // when it gets too big
+    if (scaleFactor != 0) {
+      // Get the current iteration number for scaling 
+      int iterationNum = this.getIterationNum();
+      dist = dist / (scaleFactor * (iterationNum + 1));
+    }
+    
+    // Get the current iteration string
+    String currentIteration = this.getIterationString(); 
+    
+    // [TODO]:[DONE] Loop through each character in the iteration string,
+    // and do turtle operations based on the character
+    for (int i = 0; i < currentIteration.length(); i++) {
+      Character c = currentIteration.charAt(i); 
+      // [TODO]:[DONE] Implement different l-system vocabulary
+      switch (c) {
+        case 'F':
+          t.forward(dist);
+          break; // The "break" exits out of the switch statement and prevents the next cases from running
+         case 'B':
+           // B denotes backward movement
+           t.forward(-dist);
+           break;
+         case 'X':
+           // for X we do not want to move at all
+           break;
+         case '-':
+           // We will use - to indicate a right angle change
+           // [TODO]:[DONE] Implement operations for each l-system vocabulary
+           t.right(this.rotateAngle);
+           break;
+         case '+':
+           // We will use + to indicate a left angle change
+           t.left(this.rotateAngle);
+           break;
+         case '[':
+           // We will use [ to indicate push
+           t.push();
+           break;
+         case ']':
+           // We will use ] to indicate pop
+           t.pop();
+           break;
+         case 'S':
+           // draw a semicircle
+           make_semi_circle(int(dist));
+           break;
+         case 'C':
+           // draw a circle
+           make_circle(int(dist/2));
+           break;
+         case 'G':
+           // move in a bigger motion
+           t.forward(-dist * 1.5);
+           break;
+         case 'R':
+           // move in a random motion, but also downward
+           t.forward(-random(1, dist));
+           break;
+         case 'Y':
+           float r = random(-1, 1);
+           if (r > 0) {
+             t.right(this.rotateAngle);
+           } else {
+             t.left(this.rotateAngle);
+           }
+           break;
+         case 'H':
+           // lateral move no drawing
+           t.right(this.rotateAngle);
+           t.penUp();
+           t.forward(dist);
+           t.penDown();
+           break;
+         default:
+           // Throw an error if we don't have a draw operation implemented 
+           throw new IllegalArgumentException("Missing a drawing operation case for character: " + c.toString());  
+      }
+    }
+  }
+}
+```
+## Task 3: Creating Unique L-System Designs
+I created three unique L-System designs, starting with some of the book references and then trying different variations on Koch spirals.
+
+### L-Systems Code
+```
+
+// Maggie's LSystems
+LSystem initDillPlant(){
+  // pg. 37 in Book - Fig 1.24 (e)
+  // initialize turtle variables
+  float moveDist = 15;
+  float rotateAngle = 30.0;
+  float scaleFactor = 1.0;
+  
+  // The intial axiom / input string
+  String axiom = "X";
+  
+  // Create any production rules
+  HashMap<Character, String> rules = new HashMap<>();
+  rules.put('X', "F[+X][-X]FX");
+  rules.put('F', "FF");
+    
+  // Create and return the Lsystem
+  return new LSystem(axiom, rules, moveDist, rotateAngle, scaleFactor);
+}
+
+// Playing with semicircles
+LSystem initSemiCircles(){
+  // initialize turtle variables
+  float moveDist = 40;
+  float rotateAngle = 25.0;
+  float scaleFactor = 0.25;
+  
+  // The intial axiom / input string
+  String axiom = "X";
+  
+  // Create any production rules
+  HashMap<Character, String> rules = new HashMap<>();
+  rules.put('X', "[F][+X][-X]");
+  rules.put('F', "FS");
+  rules.put('S', "[FS][FS]");
+    
+  // Create and return the Lsystem
+  return new LSystem(axiom, rules, moveDist, rotateAngle, scaleFactor);
+}
+
+LSystem multiKoch() {
+    // initialize turtle variables
+  float moveDist = 20;
+  float rotateAngle = 75.0;
+  float scaleFactor = 1.0;
+  
+  // The intial axiom / input string
+  String axiom = "[+G]G[-G]";
+  
+  // Create any production rules
+  HashMap<Character, String> rules = new HashMap<>();
+  rules.put('G', "X[F][B]Y");
+  rules.put('X', "[+B][-B]");
+  rules.put('Y', "[+F][-F]");
+  rules.put('B', "B+B-B-B+B"); 
+  rules.put('F', "F+F-F-F+F");
+    
+  // Create and return the Lsystem
+  return new LSystem(axiom, rules, moveDist, rotateAngle, scaleFactor); 
+}
+```
+### Dill-Inspired Design
+This design started with an L-System from the book and evolved to have slightly different leaf variations.
+
+Axiom: 
+
+N=0 Results
+
+n =  1  :  F[+X][-X]FX
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_3_27.svg" width=200 height=200/>
+
+n =  2  :  FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_3_31.svg" width=200 height=200/>
+
+n =  3  :  FFFF[+FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX][-FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX]FFFFFF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_3_33.svg" width=300 height=300/>
+
+### Semi-Circles
+For this design, I messed around with drawing circles and semi-circles of different sizes to see how I could get them to overlap with lines being produced.  I struggled creating designs where the end points of the semi-circles and outer edges of circles would align with the straight edges in the design.
+
+Axiom: n =  0  :  X
+
+n =  1  :  [F][+X][-X]
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_5_2.svg" width=300 height=300/>
+
+n =  2  :  [FS][+[F][+X][-X]][-[F][+X][-X]]
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_5_6.svg" width=300 height=300 />
+
+n =  3  :  [FS[FS][FS]][+[FS][+[F][+X][-X]][-[F][+X][-X]]][-[FS][+[F][+X][-X]][-[F][+X][-X]]]
+<img alt="" src="../assets/images/lsystem-2024_2_20-18_5_9.svg" width=300 height=300 />
+
+### Koch Variations
+For my final design, I started with a Koch snowflake design and wanted to make additional ones to see how they would interact over a series of iterations.
+
+Axiom: n =  0  :  [+G]G[-G]
+
+n =  1  :  [+X[F][B]Y]X[F][B]Y[-X[F][B]Y]
+<img alt="" src="../assets/images/lsystem-2024_2_23-13_18_15.svg"/>
+
+n =  2  :  [+[+B][-B][F+F-F-F+F][B+B-B-B+B][+F][-F]][+B][-B][F+F-F-F+F][B+B-B-B+B][+F][-F][-[+B][-B][F+F-F-F+F][B+B-B-B+B][+F][-F]]
+<img alt="" src="../assets/images/lsystem-2024_2_23-13_18_17.svg"/>
+
+n =  3  :  [+[+B+B-B-B+B][-B+B-B-B+B][F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F][B+B-B-B+B+B+B-B-B+B-B+B-B-B+B-B+B-B-B+B+B+B-B-B+B][+F+F-F-F+F][-F+F-F-F+F]][+B+B-B-B+B][-B+B-B-B+B][F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F][B+B-B-B+B+B+B-B-B+B-B+B-B-B+B-B+B-B-B+B+B+B-B-B+B][+F+F-F-F+F][-F+F-F-F+F][-[+B+B-B-B+B][-B+B-B-B+B][F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F][B+B-B-B+B+B+B-B-B+B-B+B-B-B+B-B+B-B-B+B+B+B-B-B+B][+F+F-F-F+F][-F+F-F-F+F]]
+<img alt="" src="../assets/images/lsystem-2024_2_23-13_18_19.svg"/>
+
+## Task 4: Fabrication
+<img alt="Etch of a dill-like plant on black acrylic" src="../assets/images/dill_on_acrylic.png" width=300 height=600 />
+
+<img alt="Multi-Koch Spiral Pattern Engraving on clear acrylic" src="../assets/images/koch_on_acrylic.png" width=400 height=400 />
+
+### Methods
+For the fabrication, I chose to print out my Koch variation design and the dill inspired plant.  I kept expanding the number of iterations until I had a final pattern that I liked and then saved the pattern to a .svg.  Then I imported the .svg files into Rhino 8 and made sure to join all the curves and mark the width to hairline for etching.  I chose to use Vector engraving/etching given the fine details present in these designs.  I thought that with cuts the chance of accidentally slicing the material seemed higher.
+
+### Materials
+Both of my designs were cut out of acrylic - the only difference is that the dill is etched into a black acrylic piece which I think gives a pretty cool effect.
+
+### Outputs vs. Reality
+Overall, I'm happy with how my designs came out.  The Koch spiral feels more sparse on the outer nodes than I was hoping for, but I knew this when creating the .svg itself.  I think some of the detail is lost in the final product but it still comes out with an overall interesting visual effect.  The black acrylic against the etch of the dill design came out better than I anticipated.
+
+### Challenges Faced
+I was surprised by how computationally intensive drawing the L-systems can be.  As I increased the number of iterations, I started to notice a significant lag time to produce the .svg files in processing.  Additionally, I had to do some additional clean up in Rhino with the .svg files since I noticed that the import seems to like to introduce random shapes (such as a rectangular border around the dill plant).  When I printed the dill plant I was using a piece of recycled black acrylic that had a design that I forgot to cut off so I did have to do a second set of cuts to remove the previously used design.

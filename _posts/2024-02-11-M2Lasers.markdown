@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "M2: Lasered - Laser Cutting Computational Designs"
-date:   2024-01-22 12:29:54 +0100
+date:   2024-02-11 12:29:54 +0100
 categories: comp_fabrication
 ---
 ## Description
