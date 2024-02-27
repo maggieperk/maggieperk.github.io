@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "iSAT Teacher Dashboard - End to End Classroom Discourse Analysis"
+date:   2024-02-27 09:15:54 +0100
+categories: projects
+---
+## Project Overview
+The goal of this project was to create an interactive teacher display to provide near-real time feedback on classroom discourse in a public school setting [1].  The system consists of a multi-modal recording system that captures classroom audio and video and uploads the files in 10 second chunks to a secure storage repository. These recordings make an API call to a python server called the Multi-Modal Inference Agent (MMIA) which transcribes the audio chunks and analyzes them for different indicators of productive classroom discussion.  The transcribed audio is analyzed for unique speakers, content words counts (based on vocabulary extracted from lesson curriculum materials), and per-speaker word breakdown.  Utterances are also fed as input to BERT-based classifiers [2] for Collaborative Problem Solving (CPS) [3] codes and Off-Task/On-Task classifiers.  The output of these results is then pushed to a DynamoDB table where they are picked up by a front end interface.  The teacher facing dashboard can display the results of these models on a near-real time basis for multiple groups in the same classroom.
+
+## Authorship & Methodology
+This project was a significant collaborative effort across the different strands of the NSF Institute for Student-AI teaming.  I wrote the overall software architecture design that was used to connect the stored recordings to the transcription service, inference modules (executing the BERT-classifiers) and the front-end teacher display.  In order to design this architecture, I met with our executive team to discuss demo objectives, the Automatic Speech Recognition team to discuss how to execute their transcription code and agree upon a set data format for passing between pieces of architecture, our language modeling researchers to learn how to format input to the classification system, and the user interface design team.  With the design in place, I set to creating a python server with an API that could be invoked when new recordings were available from the classroom and execute our inference module.  Although I did not train the classifiers invoked by the system, it was my job to process the transcribed utterances so they could be fed to different classifiers as detailed below.  Additionally, I analyze the utterances for lesson-specific content words and per-speaker word counts which are reported as output for the teacher display.
+
+As mentioned above, the inference server for this system leverages a python Flask API.  One of the key concerns was designing the system in such a way that we could efficiently evoke multiple sentence-level classification models.  To address this, I wrote code that loads all of the models at start time to avoid high latency on each call to the models. I also went through our existing classroom data and curriculum materials to identify key vocabulary words that were considered high indicators of subject-relevant conversation along with appropriate percentiles.   My inference module takes the output of the ASR models and runs the vocabulary analysis script along with different RoBERTa-based sequence classification models including one for Collaborative Probleming Solving code and another for Off Task/On Task classification.  
+
+## Outcome
+This system now works successfully from multi-group recording to teacher display. This project was presented at the 2022 workshop on AI for Education and won the Best Interactive Demo Award.  The base transcription service and inference module have been used as the platform on which all of the other NSF iSAT projects have been built on including a Community Builder interface that helps students see in real-time how their conversations adhere to community values and an interactive conversational agent.
+
+## Acknowledgements 
+This research was supported by the NSF National AI Institute for Student-AI Teaming (iSAT) under grant DRL 2019805. The opinions expressed are those of the authors and do not represent views of the NSF.
+
+## References
+1. Rachel Dickler, Peter Foltz, Nikhil Krishnaswamy, Jacob Whitehill, John Weatherly, Michal Bodzianowski, Maggie Perkoff, Rosy Southwell, Samuel Pugh, Jeff Bush, Michael Chang, Leanne Hirshfield, Daeja Showers, Ananya Ganesh, Zeqian Li, Elita Danilyuk, Xinlu He, Ibrahim Khalil Khebour, Indrani Dey, et al. July 29-30 2022. iSAT Speech-Based AI Display for Small Group Collaboration in Classrooms.
+2. Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.
+3. Samuel L. Pugh, Shree Krishna Subburaj, Arjun Ramesh Rao, Angela E. B. Stewart, Jessica Andrews-Todd, and Sidney K. D’Mello. 2021. Say What? Automatic Modeling of Collaborative Problem Solving Skills from Student Speech in the Wild. International Educational Data Mining Society.
+
