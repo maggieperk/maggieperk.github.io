@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "M3: 3D Printing Parametric Furniture Designs"
+date:   2024-03-15 10:30:54 +0100
+categories: comp_fabrication
+---
+# Task 1: Creating Parametric Table or Chair Designs
+For this assignment, I decided that I wanted to create a set of tables that were inspired by branching trees.  To simplify the design, I decided the table would have a set base object (a trunk), with a major leaf canopy and then one branch with a lower set of "leaves".  Originally, I used a cylinder design for the base and realized that the design was too simple and could not have a twist variation.  So instead, I created an extruded polygon in Grasshopper that I could manipulate with the Twist element to more closely resemble how trees might look when varied.  For the top set of "leaves", I used a flattened cylinder of varying heights while the lower set is a polygon that can be manipulated in terms of number of sides and size.  One of the more difficult tasks was trying to connect the lower arm of the table to the main base, I used a pipe element that would link between offset plane elements to get the desired effect.
+
+The Grasshopper code is available [here](https://github.com/maggieperk/compfab_spring_2024/blob/main/M3.gh).
+## Grasshopper Snapshots
+<b> Table Base/Trunk </b>
+
+![Grasshopper elements for base polygon.](../assets/images/M3_basepolygon_gh.png)
+
+
+<b> Top of Table </b>
+
+![Grasshopper elements for top of table](../assets/images/M3_tabletop_gh.png)
+
+<b> Lower branch/table section </b>
+
+![Grasshopper elements for lower branch section](../assets/images/M3_lowertable_gh.png)
+
+## Variations in Rhino3D
+<b>Variation 1</b>
+<figure>
+    <img src="../assets/images/M3_Variation1_screenshot.png" height="20%" width="50%"
+         alt="A model of a table with a flat cylinder top, twisted base, and hexagonal lower branch.">
+    <figcaption>Variation 1 - simple twisted base with a small lower branch.</figcaption>
+</figure>
+
+<b>Variation 2 </b>
+<figure>
+    <img src="../assets/images/M3_Variation2_screenshot.png" height="20%" width="50%"
+         alt="A model of a table with a small cylinder top, twisted base, and a lower segment with a thin cylinder pipe connecting it to the base.">
+    <figcaption>Variation 2 - polygon base with more sides (and more twist) with a small lower branch that is more detached from the base.</figcaption>
+</figure>
+
+<b> Variation 3 </b>
+<figure>
+    <img src="../assets/images/M3_variation3.png" height="20%" width="50%"
+         alt="A model of a table with a flat cylinder top, twisted base, and a long lower arm connecting to a cube-like shelf.">
+    <figcaption>Variation 3 - a similar twisted base to Variation 2 with a large cube as the additional segment.</figcaption>
+</figure>
+
+# Task 2: 3D Printing the Designs
+For printing out my designs - I exported variations 1 and 2 as STL files which were then imported into PrusaSlicer using the default layer size of 0.1mm.  One of the variations was printed using the PrusaMK3S+ and the other was using the Prusa Mini due to printer availability.  In both cases, I am using the PLA material provided by default with an infill setting of 10%.  Additionally, to fabricate the structures as they are I had to use the support everywhere setting to generate additional support material.  This allowed me to create the branching effect.  Removing the excess material turned out to be more difficult than anticiapted, and I nearly broke the fragile pipe sections in the process.  I was impressed by how smooth the base and tops of the table came out and how the twist looks when printed.  Variation 1 took 2.5 hours to print whereas Variation 2 took 2 hours.
+
+Originally with the branch issues, I was hoping that if I kept the angle below 45 degrees I could print without support material - but I would have still required support material to support the top of the table.  In retrospect, printing upside down might have saved a fair amount of material so this is something I would consider for future projects.
+<figure>
+    <img src="../assets/images/M3_prusaprinting.png" height="20%" width="50%"
+         alt="A Prusa MK3S+ printer starting the first layer of a project with black filament.">
+    <figcaption>Just starting out the print for variation 2 on the MK3S+.</figcaption>
+</figure>
+
+<figure>
+    <img src="../assets/images/M3_prusprintingcomplete.png" height="20%" width="50%"
+         alt="A Prusa MK3S+ printer with a completed project of black filament.  The project is surrounded by support material in a cube like shape.">
+    <figcaption>The completed Variation 2: A visual of the amount of support material created for these tiny tables.</figcaption>
+</figure>
+
+Variation 1
+<figure>
+    <img src="../assets/images/M3_var1_print_real.png" height="20%" width="50%"
+         alt="A miniature table in black filament with a wide circular top and a smaller lower table branch.">
+    <figcaption>Although the sides of the table or smooth, removing support material from the support branch was difficult and led to awkward edges.</figcaption>
+</figure>
+
+Variation 2
+<figure>
+    <img src="../assets/images/M3_var2_printed.png" height="20%" width="50%"
+         alt="A miniature table in black filament with a  circular top and a similar size lower table branch.">
+    <figcaption>The table twist is still well defined here, but we can see the hard edge on the lower section - here we can almost not see there is a pipe connecting the base to the lower section and instead it almost came out fully attached.</figcaption>
+</figure>
+
+
