@@ -1,0 +1,63 @@
+---
+layout: post
+title:  "L3:Travel through Another Dimension"
+date:   2024-03-22 10:30:54 +0100
+categories: comp_fabrication
+---
+# Part 1: Building A Slicer and Generating G Code
+The grasshopper code and the slicer itself can be found at the github repo [here](https://github.com/maggieperk/compfab_spring_2024/blob/main/L3-Updated_CodeBase.gh).
+
+## Task 1: Building the Slicer
+Contours of our Cylinder:
+![Cylinder with contours highlighted](../assets/images/L3_part1_contours.png)
+
+Adding the rectangular infill box:
+![Rectangular infill ines in green around a red cylinder](../assets/images/L3_part1_infillbox.png)
+
+We can see this operating at each layer:
+![Rectangular infill lines at 4 layers of the cylinder](../assets/images/L3_part1_infillbox_layers.png)
+
+And finally with the trimmed infill lines fit to the cylinder shape:
+![Infill lines trimmed to a circle shape](../assets/images/L3_part1_trimmedinfill.png)
+
+## Task 2: Generating GCode
+Writing the python code was fairly straightforward - it took a few tries to get the syntax correct for some of the math functions as well as strings.
+
+I used the following tutorial resources to look up a few python syntax questions and distance functions:
+* Distance between points: https://byjus.com/maths/distance-between-two-points-3d/
+* Python sqrt syntax: https://realpython.com/python-square-root-function/
+* python join list syntax: https://www.w3schools.com/python/gloss_python_join_lists.asp
+
+The output gcode is [here](https://github.com/maggieperk/compfab_spring_2024/blob/main/output.gcode)
+
+## Task 3: Validating GCode
+The code has not passed all tests yet.  I still need to fix the following before moving on to Part 2:
+22/3/2024 @ 21:21:26 ⇒ Running 25 Tests On "output.gcode" ...
+* [PASSED] Test 1: Is Correct Printer Model [MK3S].
+* [PASSED] Test 2: Is Correct Printer Nozzle Size [0.4 mm].
+* [PASSED] Test 3: Set Units to Millimeters.
+* [PASSED] Test 4: Use Absolute Coordinates for X, Y, Z.
+* [PASSED] Test 5: Use Relative Distances for Extrusion (E).
+* [PASSED] Test 6: Set Valid Extruder Motor Current [LQ: 538, HQ: 430].
+* [PASSED] Test 7: Set Max Accelerations [X: 1000, Y: 1000, Z: 200, E: 5000 mm/s^2].
+* [PASSED] Test 8: Set Min Bed Temperature [60 C].
+* [PASSED] Test 9: Set Hotend Temperature for PLA [200 C - 225 C].
+* [PASSED] Test 10: No Cold Extrusion / Set Hotend Temp Before Extrusion.
+* [PASSED] Test 11: Home All Axes (X, Y, Z) at Beginning of Print.
+* [FAILED] Test 12: All X Positions Within Bounds [0 mm, 255 mm] at line 35.
+* [FAILED] Test 13: All Y Positions Within Bounds [-4 mm, 212.5 mm] at line 147.
+* [PASSED] Test 14: All Z Positions Within Bounds [0 mm, 210 mm].
+* [PASSED] Test 15: All Z-Moves Are Independent (No X, Y, E).
+* [PASSED] Test 16: Travel XY Feed Rates (No Extrusion) Within Limits [0 mm/min, 12000 mm/min].
+* [PASSED] Test 17: Print Feed Rates (Extrusion) Within Limits [0 mm/min, 7200 mm/min].
+* [PASSED] Test 18: Z Feed Rates (Layer Change) Within Limits [0 mm/min, 720 mm/min].
+* [FAILED] Test 19: Extrusion Values Are Sane for Filament Diameter [1.75 mm] and Nozzle Diameter [0.4 mm] at line 36.
+* [PASSED] Test 20: No Extrusion at Z < Min Layer Height [0.15 mm].
+* [PASSED] Test 21: All Layers in Increasing Z-order / No Crossing Previously Printed Z Heights.
+* [PASSED] Test 22: Turn Off Hotend Temperature At End of Print.
+* [PASSED] Test 23: Turn Off Heated Bed Temperature At End of Print.
+* [PASSED] Test 24: Disable Fan At End of Print.
+* [PASSED] Test 25: Disable Motors At End of Print.
+ 22/3/2024 @ 21:21:26 ⇒ Finished Test Run on "output.gcode" (Passed 22 of 25 Tests).
+
+# Part 2: Fabricating the Design
