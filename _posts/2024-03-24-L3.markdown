@@ -60,4 +60,17 @@ The code has not passed all tests yet.  I still need to fix the following before
 * [PASSED] Test 25: Disable Motors At End of Print.
  22/3/2024 @ 21:21:26 ⇒ Finished Test Run on "output.gcode" (Passed 22 of 25 Tests).
 
+The code is now successfully running - I need to adjust the calculation for v_out and ensure I had proper float validation checks.
+
+Additionally, I had to update the code to move to the center of the build plate.
+
 # Part 2: Fabricating the Design
+I fabricated the test cylinder both with my custom slicer/Gcode generator and the .stl provided on the course website with Prusa slicing.
+
+The resulting cylinders look almost identical.  I did notice that the print time was longer for the custom slicer/Gcode variation - it took 11 minutes to print while the class version took 5.  Additionally, the printer extruded material while doing the initial move to the center of the build plate.
+
+Side by Side (excess material can be seen on the print from the custom slicer:
+![Side by Side Images](../assets/images/l3_side_by_side.JPG)
+Class Version Finished Print (Note print time of 5 minutes)
+![Class Version With Prusa Slicer](../assets/images/L3_part2_class_model.jpeg)
+
