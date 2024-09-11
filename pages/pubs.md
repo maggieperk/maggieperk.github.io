@@ -5,7 +5,8 @@ permalink: /publications/
 weight: 3
 ---
 # Publications
-
+- [Paper](https://maggieperk.github.io/assets/papers/SIGDIAL_Submission_2024.pdf) __E. Margaret Perkoff__, Angela Maria Ramirez, Sean von Bayern, Marilyn A. Walker, and James Martin. 2024. “Keep up the good work!”: Using Constraints in Zero Shot Prompting to Generate Supportive Teacher Responses. In 25th Meeting of the Special Interest Group on Discourse and Dialogue, Kyoto, Japan.
+- E. Margaret Perkoff, Emily Doherty, Jeffrey Bush. 2024. Crafting a Responsible Dialog System for Collaborative Learning Environments. In AI for Education: Bridging Innovation and Responsibility at the 38th AAAI Annual Conference on AI. Vancouver, Canada.
 - [Paper](https://aclanthology.org/2023.bea-1.47/)__E. Margaret Perkoff__, Abhidip Bhattacharya, Jon Z. Cai. Comparing Neural Question Generation Architectures for Reading Comprehension. In ACL 2023 Workshop on Innovative Use of NLP for Building Educational Applications, Toronto, Canada.
 - [Paper](https://aclanthology.org/2023.acl-short.156/)Ananya Ganesh, Jie Cao,__E. Margaret Perkoff__, Rosy Southwell, Martha Palmer and Katharina Kann. Mind the Gap between the Application Track and the Real World.  In ACL 2023, Toronto, Canada.
 - [Paper](https://dl.acm.org/doi/10.1145/3565472.3595606)Jie Cao, Ananya Ganesh, Jon Cai, Rosy Southwell, __Margaret Perkoff__, Michael Regan, Katharina Kann, James Martin, Martha Palmer and Sidney D'Mello. A Comparative Analysis of Automatic Speech Recognition Errors in Small Group Classroom Discourse. In ACM UMAP 2023, Limassol, Cyprus.
