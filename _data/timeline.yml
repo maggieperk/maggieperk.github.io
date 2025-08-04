@@ -15,6 +15,20 @@
 
 - title: PhD Student, University of Colorado at Boulder
   from: August 2020
-  to: present
-  description: I am currently pursuing a joint PhD in Computer Science & Cognitive Science at the University of Colorado Boulder.  My two excellent academic advisors are Dr. James Martin and Dr. Clayton Lewis.  My areas of interest include assistive technology, natural language processing, and education technology. 
+  to: May 2025
+  description: I received a joint PhD in Computer Science & Cognitive Science at the University of Colorado Boulder.  My two excellent academic advisors are Dr. James Martin and Dr. Clayton Lewis.  I was a Research Assistant with the NSF Institute for Student AI Teaming as well as the TalkMoves project.  My dissertation focused on the use of generative AI to supportive collaborative learning in middle school classrooms. 
 
+- title: NAEP Doctoral Intern in AI, American Institutes for Research
+  from: May 2024
+  to: September 2024
+  description: I worked with NAEP Mathematics data to assess the viability of using machine learning models to score constructed response NAEP mathematics items for grades 4 and 8.
+
+- title: Machine Learning Intern, Nookly AI
+  from: October 2024
+  to: January 2025
+  description: At Nookly, I designed and implemented a RAG system to support a parenting assistant chatbot.  The chatbot could provide basic support to parents as well as refer Nookly users to appropriate story building tools to support SEL skill building.
+
+- title: Postdoctoral Researcher, University of Pennsylvania
+  from: August 2025
+  to: present
+  description: Presently, I am a postdoc at the University of Pennsylvania working on the [U-GAIN Reading Project](https://ugain-reading.org/).  I'm investigating how to leverage generative AI to adapt reading instruction to individual learner's needs.

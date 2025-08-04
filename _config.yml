@@ -18,10 +18,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: E. Margaret Perkoff
+title: E. Margaret Perkoff, PhD
 email: margaret.perkoff@colorado.edu
 description:
-   Margaret Perkoff, PhD student at CU Boulder in Computer Science & Cognitive Science. I'm excited about NLP research for assistive communication devices and education techonlogy.
+   Margaret Perkoff, Postdoctoral Researcher at University of Pennsylvania. I'm excited about using generative AI to increase educational equity and the response use of AI both inside and outside of classrooms.
 domain: maggieperk.github.io
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://maggieperk.github.io" # the base hostname & protocol for your site, e.g. http://example.com
